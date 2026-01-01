@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 public class Programmeur {
     Integer id;
@@ -18,7 +17,7 @@ public class Programmeur {
         this.nom = nom;
         this.prenom = prenom;
         this.adresse = adresse;
-        this.pseudo = nom + " " + prenom;
+        this.pseudo = pseudo;
         this.responsable = responsable;
         this.hobby = hobby;
         this.annaissance = annaissance;
@@ -30,7 +29,7 @@ public class Programmeur {
 
     @Override
     public String toString() {
-        return id + " "+  nom + " " + prenom + " " + annaissance + " " + salaire + " " + prime +  " " + pseudo;
+        return "-ID " + id + " | "+  nom + " " + prenom + " | née en " + annaissance + " | Salaire : " + salaire + "€ | Prime : " + prime +  "€ | Pseudo : " + pseudo;
     }
 
 }
