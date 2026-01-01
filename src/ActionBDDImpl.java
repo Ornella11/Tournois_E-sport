@@ -5,10 +5,16 @@ import java.util.Scanner;
 
 
 public class ActionBDDImpl {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         Connection conn = connectToDatabase();
-        ProgrammeurByProjet(conn);
-
+        ListeProgrammeurs(conn);
+//        affichageProgrammeurByID(conn);
+//        supprimerProgrammeur(conn);
+//        ajouterProgrammeur(conn);
+//        modifierSalaire(conn);
+//        ListeProjet(conn);
+//        assignerProjet(conn);
+//        ProgrammeurByProjet(conn);
     }
 
 
@@ -19,7 +25,7 @@ public class ActionBDDImpl {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/Prog_BD",
-                    "melek",
+                    "ornella",
                     "password"
             );
             System.out.println("Connected to database successfully");
@@ -29,7 +35,7 @@ public class ActionBDDImpl {
         return conn;
     }
 
-    //        // Liste des programmeurs
+    // Liste des programmeurs
     public static ArrayList<Programmeur> ListeProgrammeurs(Connection conn) {
         ArrayList<Programmeur> liste = new ArrayList<>();
 
@@ -52,9 +58,10 @@ public class ActionBDDImpl {
                 );
                 liste.add(p);
             }
-            System.out.println("Liste des programmeurs:");
-            System.out.println(liste);
-
+            System.out.println("**** Liste des programmeurs **** :");
+            for (Programmeur p : liste) {
+                System.out.println(p);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,6 +137,118 @@ public class ActionBDDImpl {
             }
         }
     }
+
+    // Ajouter un programmeur
+    public static void ajouterProgrammeur(Connection conn) {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            System.out.print("**** Ajout d'un programmeur **** : \n");
+            System.out.print("Nom : ");
+            String nom = scanner.nextLine();
+
+            System.out.print("Prénom : ");
+            String prenom = scanner.nextLine();
+
+            System.out.print("Adresse : ");
+            String adresse = scanner.nextLine();
+
+            System.out.print("Pseudo : ");
+            String pseudo = scanner.nextLine();
+
+            System.out.print("Responsable : ");
+            String responsable = scanner.nextLine();
+
+            System.out.print("Hobby : ");
+            String hobby = scanner.nextLine();
+
+            System.out.print("Année de naissance : ");
+            int annaissance = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Salaire : ");
+            double salaire = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("Prime : ");
+            double prime = Double.parseDouble(scanner.nextLine());
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "INSERT INTO programmeur " +
+                            "(nom, prenom, adresse, pseudo, responsable, hobby, annaissance, salaire, prime) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+
+            pstmt.setString(1, nom);
+            pstmt.setString(2, prenom);
+            pstmt.setString(3, adresse);
+            pstmt.setString(4, pseudo);
+            pstmt.setString(5, responsable);
+            pstmt.setString(6, hobby);
+            pstmt.setInt(7, annaissance);
+            pstmt.setDouble(8, salaire);
+            pstmt.setDouble(9, prime);
+
+            int rs = pstmt.executeUpdate();
+
+            if (rs > 0) {
+                System.out.println("Programmeur ajouté avec succès !");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+    }
+
+    // Modifier le salaire
+    public static void modifierSalaire(Connection conn) {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            System.out.println("**** Modifier le salaire ****");
+            System.out.print("ID du programmeur à modifier : ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            PreparedStatement selectStmt = conn.prepareStatement(
+                    "SELECT salaire FROM programmeur WHERE id = ?"
+            );
+            selectStmt.setInt(1, id);
+            ResultSet rsSelect = selectStmt.executeQuery();
+
+            if (!rsSelect.next()) {
+                System.out.println("Aucun programmeur trouvé avec cet ID.");
+                return;
+            }
+
+            double ancienSalaire = rsSelect.getDouble("salaire");
+
+            System.out.print("Nouveau salaire : ");
+            double nouveauSalaire = Double.parseDouble(scanner.nextLine());
+
+            PreparedStatement updateStmt = conn.prepareStatement(
+                    "UPDATE programmeur SET salaire = ? WHERE id = ?"
+            );
+            updateStmt.setDouble(1, nouveauSalaire);
+            updateStmt.setInt(2, id);
+
+            int rows = updateStmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Salaire modifié avec succès !");
+                System.out.println("Ancien salaire : " + ancienSalaire);
+                System.out.println("Nouveau salaire : " + nouveauSalaire);
+            }
+
+            rsSelect.close();
+            selectStmt.close();
+            updateStmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrée invalide.");
+        }
+    }
+
+
 
     // Liste des projets
     public static ArrayList<Projet> ListeProjet(Connection conn) {
@@ -238,5 +357,3 @@ public class ActionBDDImpl {
     }
 
     }
-
-
