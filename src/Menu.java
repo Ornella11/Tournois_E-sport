@@ -1,3 +1,4 @@
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Menu {
@@ -20,31 +21,35 @@ public class Menu {
             System.out.print("Votre choix : ");
 
             int choice = Integer.parseInt(input.nextLine());
+            ActionBDD action = new ActionBDDImpl();
+
+            Connection conn = action.connectToDatabase();
+
 
             switch (choice) {
                 case 1:
-                    ActionBDDImpl.ListeProgrammeurs(ActionBDDImpl.connectToDatabase());
+                    action.ListeProgrammeurs(conn);
                     break;
                 case 2:
-                    ActionBDDImpl.affichageProgrammeurByID(ActionBDDImpl.connectToDatabase());
+                    action.affichageProgrammeurByID(conn);
                     break;
                 case 3:
-                    ActionBDDImpl.supprimerProgrammeur(ActionBDDImpl.connectToDatabase());
+                    action.supprimerProgrammeur(conn);
                     break;
                 case 4:
-                    ActionBDDImpl.ajouterProgrammeur(ActionBDDImpl.connectToDatabase());
+                    action.ajouterProgrammeur(conn);
                     break;
                 case 5:
-                    ActionBDDImpl.modifierSalaire(ActionBDDImpl.connectToDatabase());
+                    action.modifierSalaire(conn);
                     break;
                 case 6:
-                    ActionBDDImpl.ListeProjet(ActionBDDImpl.connectToDatabase());
+                    action.ListeProjet(conn);
                     break;
                 case 7:
-                    ActionBDDImpl.assignerProjet(ActionBDDImpl.connectToDatabase());
+                    action.assignerProjet(conn);
                     break;
                 case 8:
-                    ActionBDDImpl.ProgrammeurByProjet(ActionBDDImpl.connectToDatabase());
+                    action.afficherProgrammeursByProjet(conn);
                     break;
                 case 9:
                     quitter = true;

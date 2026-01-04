@@ -1,25 +1,24 @@
 import java.sql.*;
 import java.util.ArrayList;
-import java.sql.*;
 import java.util.Scanner;
 
 
-public class ActionBDDImpl {
+public class ActionBDDImpl implements ActionBDD {
     public static void main(String[] args) {
-        Connection conn = connectToDatabase();
-        ListeProgrammeurs(conn);
+
+        // ListeProgrammeurs(conn);
 //        affichageProgrammeurByID(conn);
 //        supprimerProgrammeur(conn);
 //        ajouterProgrammeur(conn);
 //        modifierSalaire(conn);
-//        ListeProjet(conn);
+        //        ListeProjet(conn);
 //        assignerProjet(conn);
-//        ProgrammeurByProjet(conn);
+       // afficherProgrammeursByProjet(conn);
     }
 
-
     // Connexion à la base de donnée
-    public static Connection connectToDatabase() {
+    @Override
+    public Connection connectToDatabase() {
         Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -28,7 +27,7 @@ public class ActionBDDImpl {
                     "ornella",
                     "password"
             );
-            System.out.println("Connected to database successfully");
+           // System.out.println("Connected to database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -36,7 +35,8 @@ public class ActionBDDImpl {
     }
 
     // Liste des programmeurs
-    public static ArrayList<Programmeur> ListeProgrammeurs(Connection conn) {
+    @Override
+    public ArrayList<Programmeur> ListeProgrammeurs(Connection conn) {
         ArrayList<Programmeur> liste = new ArrayList<>();
 
         try {
@@ -71,7 +71,8 @@ public class ActionBDDImpl {
     }
 
     // Affichage des programmeurs
-    public static void affichageProgrammeurByID(Connection conn) {
+    @Override
+    public void affichageProgrammeurByID(Connection conn) {
         try {
             Scanner scanner = new Scanner(System.in);
 
@@ -105,7 +106,8 @@ public class ActionBDDImpl {
     }
 
     // Supprimer un programmeur
-    public static void supprimerProgrammeur(Connection conn) {
+    @Override
+    public void supprimerProgrammeur(Connection conn) {
         Scanner scanner = new Scanner(System.in);
         boolean suppressionReussie = false;
 
@@ -139,7 +141,8 @@ public class ActionBDDImpl {
     }
 
     // Ajouter un programmeur
-    public static void ajouterProgrammeur(Connection conn) {
+    @Override
+    public void ajouterProgrammeur(Connection conn) {
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -199,7 +202,8 @@ public class ActionBDDImpl {
     }
 
     // Modifier le salaire
-    public static void modifierSalaire(Connection conn) {
+    @Override
+    public void modifierSalaire(Connection conn) {
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -249,86 +253,86 @@ public class ActionBDDImpl {
     }
 
 
-
     // Liste des projets
-    public static ArrayList<Projet> ListeProjet(Connection conn) {
-        ArrayList<Projet> liste = new ArrayList<>();
-
+    @Override
+    public void ListeProjet(Connection conn) {
         try {
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT * FROM PROJET");
 
-            while (rs.next()) {
-                Projet p = new Projet(
-                        rs.getInt("id"),
-                        rs.getString("intitule"),
-                        rs.getDate("date_debut"),
-                        rs.getDate("date_fin_prevue"),
-                        rs.getBoolean("etat")
-                );
-                liste.add(p);
-            }
             System.out.println("Liste des projets:");
-            System.out.println(liste);
+            while (rs.next()) {
+                boolean etat = rs.getBoolean("etat");
+                String etatTexte = etat ? "En cours" : "Achevé";
+
+                System.out.println(
+                        "Projet n° : " + rs.getInt("id") +
+                                "\nIntitulé : " + rs.getString("intitule") +
+                                "\nDate de début : " + rs.getDate("date_debut") +
+                                "\nDate de fin prévue : " + rs.getDate("date_fin_prevue") +
+                                "\nÉtat : " + etatTexte + "\n"
+                );
+            }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return liste;
+        return;
     }
 
     // Assigner un projet à un programmeur
-    public static void assignerProjet(Connection conn) {
-            try {
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Id du projet : ");
-                int projet = Integer.parseInt(scanner.nextLine());
+    @Override
+    public void assignerProjet(Connection conn) {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Id du projet : ");
+            int projet = Integer.parseInt(scanner.nextLine());
 
-                Scanner sc = new Scanner(System.in);
-                System.out.print("Id du programmeur : ");
-                int programmeur = Integer.parseInt(scanner.nextLine());
-
-
-                PreparedStatement pstmt = conn.prepareStatement(
-                        "INSERT INTO programmeur_projet(id, projet_id, programmeur_id) VALUES (id, ?, ?)");
-                pstmt.setInt(1, projet);
-                pstmt.setInt(2, programmeur);
-                int rs = pstmt.executeUpdate();
-
-                if (rs > 0) {
-                    System.out.println("Programmeur assigné !");
-                } else {
-                    throw new IllegalArgumentException("Insertion KO.");
-                }
-
-                pstmt.close();
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Id du programmeur : ");
+            int programmeur = Integer.parseInt(scanner.nextLine());
 
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "INSERT INTO programmeur_projet(id, projet_id, programmeur_id) VALUES (id, ?, ?)");
+            pstmt.setInt(1, projet);
+            pstmt.setInt(2, programmeur);
+            int rs = pstmt.executeUpdate();
+
+            if (rs > 0) {
+                System.out.println("Programmeur assigné !");
+            } else {
+                throw new IllegalArgumentException("Insertion KO.");
             }
+
+            pstmt.close();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
 
     // Liste des programmeurs qui travaillent sur le même projet
-    public static ArrayList<Programmeur> ProgrammeurByProjet(Connection conn) {
-        ArrayList<Programmeur> liste = new ArrayList<>();
+    @Override
+    public void afficherProgrammeursByProjet(Connection conn) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Saisir l'intitulé du projet : ");
+        String intitule = scanner.nextLine();
 
-        try {
-            Scanner scanner = new Scanner(System.in);
+        String sql = "SELECT pr.id, pr.nom, pr.prenom, pr.adresse, pr.pseudo, pr.responsable, pr.hobby, pr.annaissance, pr.salaire, pr.prime FROM programmeur pr JOIN programmeur_projet pp ON pp.programmeur_id = pr.id JOIN projet p ON pp.projet_id = p.id WHERE p.intitule = ? ";
 
-            System.out.println("ID du projet : ");
-            Integer sc = Integer.valueOf(scanner.nextLine());
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM Programmeur pr JOIN programmeur_projet pp ON pp.programmeur_id = pr.id join projet p ON pp.projet_id = p.id WHERE pp.projet_id = ?");
-            pstmt.setInt(1, sc);
+            pstmt.setString(1, intitule);
             ResultSet rs = pstmt.executeQuery();
 
+            System.out.println("\nListe des programmeurs : ");
             while (rs.next()) {
                 Programmeur p = new Programmeur(
                         rs.getInt("id"),
@@ -342,18 +346,15 @@ public class ActionBDDImpl {
                         rs.getDouble("salaire"),
                         rs.getDouble("prime")
                 );
-                liste.add(p);
-            }
-            System.out.println("Liste des projets:");
-            System.out.println(liste);
+                System.out.println(p.toString());
 
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
-        return liste;
 
+        return;
     }
 
-    }
+}
