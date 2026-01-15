@@ -23,6 +23,9 @@ public interface ActionBDD {
     // Liste des projets
     void ListeProjet(Connection conn);
 
+    // Ajouter un projet
+    void AjoutProjet(Connection conn);
+
     // Assigner un projet à un programmeur
     void assignerProjet(Connection conn);
 
