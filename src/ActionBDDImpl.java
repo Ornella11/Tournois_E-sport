@@ -86,8 +86,8 @@ public class ActionBDDImpl implements ActionBDD {
                         rs.getDouble(9),
                         rs.getDouble(10)
                 );
-                System.out.println(p.toString());
                 System.out.println("____________________________");
+                System.out.println(p.toString());
             }
 
         } catch (SQLException e) {
@@ -112,6 +112,7 @@ public class ActionBDDImpl implements ActionBDD {
                 int rs = pstmt.executeUpdate();
 
                 if (rs > 0) {
+                    System.out.println("____________________________");
                     System.out.println("Suppression réussie !");
                     suppressionReussie = true;
                 } else {
@@ -183,6 +184,7 @@ public class ActionBDDImpl implements ActionBDD {
             int rs = pstmt.executeUpdate();
 
             if (rs > 0) {
+                System.out.println("____________________________");
                 System.out.println("Ajout réussi !");
             }
             pstmt.close();
@@ -227,8 +229,8 @@ public class ActionBDDImpl implements ActionBDD {
 
             if (rows > 0) {
                 System.out.println("Salaire modifié avec succès !");
-                System.out.println("Ancien salaire : " + ancienSalaire);
-                System.out.println("Nouveau salaire : " + nouveauSalaire);
+                System.out.println("* ANCIEN SALAIRE : " + ancienSalaire);
+                System.out.println("* NOUVEAU SALAIRE : " + nouveauSalaire);
             }
 
             rsSelect.close();
@@ -250,8 +252,9 @@ public class ActionBDDImpl implements ActionBDD {
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT * FROM PROJET");
 
-            System.out.println("Liste des projets:");
+            System.out.println("**** Liste des projets ****");
             while (rs.next()) {
+                System.out.println("____________________________");
                 System.out.println(
                         "Projet n° : " + rs.getInt("id") +
                                 "\nIntitulé : " + rs.getString("intitule") +
@@ -287,8 +290,8 @@ public class ActionBDDImpl implements ActionBDD {
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "INSERT INTO projet " +
-                            "(intitule, date_debut, date_fin_prevue) " +
-                            "VALUES (?, ?, ?)"
+                            "(intitule, date_debut, date_fin_prevue, etat) " +
+                            "VALUES (?, ?, ?, 'Non débuté')"
             );
 
             pstmt.setString(1, intitule);
@@ -298,6 +301,7 @@ public class ActionBDDImpl implements ActionBDD {
             int rs = pstmt.executeUpdate();
 
             if (rs > 0) {
+                System.out.println("____________________________");
                 System.out.println("Ajout du projet réussi !");
             }
             pstmt.close();
@@ -357,7 +361,7 @@ public class ActionBDDImpl implements ActionBDD {
             pstmt.setString(1, intitule);
             ResultSet rs = pstmt.executeQuery();
 
-            System.out.println("\nListe des programmeurs : ");
+            System.out.println("\n**** Liste des programmeurs **** : ");
             while (rs.next()) {
                 Programmeur p = new Programmeur(
                         rs.getInt("id"),
@@ -371,6 +375,7 @@ public class ActionBDDImpl implements ActionBDD {
                         rs.getDouble("salaire"),
                         rs.getDouble("prime")
                 );
+                System.out.println("____________________________");
                 System.out.println(p.toString());
 
             }
