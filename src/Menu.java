@@ -29,7 +29,7 @@ public class Menu {
 
             switch (choice) {
                 case 1:
-                    action.ListeProgrammeurs(conn);
+                    action.afficherProgrammeurs(conn);
                     break;
                 case 2:
                     action.affichageProgrammeurByID(conn);

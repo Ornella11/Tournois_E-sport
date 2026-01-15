@@ -1,12 +1,10 @@
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public interface ActionBDD {
     // Connexion à la base de donnée
     Connection connectToDatabase();
 
-    ArrayList<Programmeur> ListeProgrammeurs(Connection conn);
+    String afficherProgrammeurs(Connection conn);
 
     // Affichage des programmeurs
     void affichageProgrammeurByID(Connection conn);
