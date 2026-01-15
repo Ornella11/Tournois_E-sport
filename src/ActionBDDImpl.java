@@ -139,6 +139,7 @@ public class ActionBDDImpl implements ActionBDD {
                 int rs = pstmt.executeUpdate();
 
                 if (rs > 0) {
+                    System.out.println("____________________________");
                     System.out.println("Suppression réussie !");
                     suppressionReussie = true;
                 } else {
@@ -327,7 +328,7 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
 
-    // Liste des projets
+    /** Afficher la liste des projets */
     @Override
     public void ListeProjet(Connection conn) {
         try {
@@ -353,7 +354,46 @@ public class ActionBDDImpl implements ActionBDD {
         return;
     }
 
-    // Assigner un projet à un programmeur
+    /** Ajouter un projet */
+    @Override
+    public void AjoutProjet(Connection conn){
+        Scanner scanner = new Scanner(System.in);
+
+        try{
+            System.out.print("**** Ajout d'un projet **** : \n");
+            System.out.print("Intitulé du projet : ");
+            String intitule = scanner.nextLine();
+
+            System.out.print("Date de début du projet : ");
+            Date date_debut = Date.valueOf(scanner.nextLine());
+
+            System.out.print("Date de fin du projet : ");
+            Date date_fin_prevue = Date.valueOf(scanner.nextLine());
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "INSERT INTO projet " +
+                            "(intitule, date_debut, date_fin_prevue, etat) " +
+                            "VALUES (?, ?, ?, 'Non débuté')"
+            );
+
+            pstmt.setString(1, intitule);
+            pstmt.setDate(2, date_debut);
+            pstmt.setDate(3, date_fin_prevue);
+
+            int rs = pstmt.executeUpdate();
+
+            if (rs > 0) {
+                System.out.println("____________________________");
+                System.out.println("Ajout du projet réussi !");
+            }
+            pstmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /** Assigner un projet à un programmeur */
     @Override
     public void assignerProjet(Connection conn) {
         try {
@@ -389,7 +429,7 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
 
-    // Liste des programmeurs qui travaillent sur le même projet
+    /** Liste des programmeurs qui travaillent sur le même projet */
     @Override
     public void afficherProgrammeursByProjet(Connection conn) {
         Scanner scanner = new Scanner(System.in);
@@ -417,6 +457,7 @@ public class ActionBDDImpl implements ActionBDD {
                         rs.getDouble("salaire"),
                         rs.getDouble("prime")
                 );
+                System.out.println("____________________________");
                 System.out.println(p.toString());
 
             }

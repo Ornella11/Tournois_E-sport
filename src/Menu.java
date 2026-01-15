@@ -15,9 +15,10 @@ public class Menu {
             System.out.println("4. Ajouter un programmeur");
             System.out.println("5. Modifier le salaire");
             System.out.println("6. Afficher la liste des projets");
-            System.out.println("7. Assigner un projet à un programmeur");
-            System.out.println("8. Obtenir la liste des programmeurs qui travaillent sur le même projet");
-            System.out.println("9. Quitter le programme");
+            System.out.println("7. Ajouter un projet");
+            System.out.println("8. Assigner un projet à un programmeur");
+            System.out.println("9. Obtenir la liste des programmeurs qui travaillent sur le même projet");
+            System.out.println("10. Quitter le programme");
             System.out.print("Votre choix : ");
 
             int choice = Integer.parseInt(input.nextLine());
@@ -46,12 +47,15 @@ public class Menu {
                     action.ListeProjet(conn);
                     break;
                 case 7:
-                    action.assignerProjet(conn);
+                    action.AjoutProjet(conn);
                     break;
                 case 8:
-                    action.afficherProgrammeursByProjet(conn);
+                    action.assignerProjet(conn);
                     break;
                 case 9:
+                    action.afficherProgrammeursByProjet(conn);
+                    break;
+                case 10:
                     quitter = true;
                     System.out.println("Au revoir !");
                     break;
