@@ -29,7 +29,7 @@ public class Programmeur {
 
     @Override
     public String toString() {
-        return "ID : " + id + "\nNom : "+  nom + "\nPrénom : " + prenom + "\nAdresse : " + adresse +  "\nPseudo : " + pseudo + "\nResponsable : " + responsable + "\nHobby : " + hobby + "\nNaissance : " + annaissance + "\nSalaire : " + salaire + "\nPrime : " + prime ;
+        return "\nID : " + id + "\nNom : "+  nom + "\nPrénom : " + prenom + "\nAdresse : " + adresse +  "\nPseudo : " + pseudo + "\nResponsable : " + responsable + "\nHobby : " + hobby + "\nNaissance : " + annaissance + "\nSalaire : " + salaire + "\nPrime : " + prime + "\n" ;
     }
 
 }
