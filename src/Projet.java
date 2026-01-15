@@ -5,9 +5,9 @@ public class Projet {
     public String intitule;
     public Date date_debut;
     public Date date_fin_prevue;
-    public boolean etat;
+    public String etat;
 
-    public Projet(int id, String intitule, Date date_debut, Date date_fin_prevue, boolean etat) {
+    public Projet(int id, String intitule, Date date_debut, Date date_fin_prevue, String etat) {
         this.id = id;
         this.intitule = "";
         this.date_debut = date_debut;

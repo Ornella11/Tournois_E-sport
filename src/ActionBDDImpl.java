@@ -6,16 +6,6 @@ import java.util.Scanner;
 public class ActionBDDImpl implements ActionBDD {
     public static void main(String[] args) {
 
-        // ListeProgrammeurs(conn);
-//        affichageProgrammeurByID(conn);
-//        supprimerProgrammeur(conn);
-//        ajouterProgrammeur(conn);
-//        modifierSalaire(conn);
-        //        ListeProjet(conn);
-//        assignerProjet(conn);
-       // afficherProgrammeursByProjet(conn);
-    }
-
     // Connexion à la base de donnée
     @Override
     public Connection connectToDatabase() {
@@ -24,7 +14,7 @@ public class ActionBDDImpl implements ActionBDD {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/Prog_BD",
-                    "ornella",
+                    "groupe10",
                     "password"
             );
            // System.out.println("Connected to database successfully");
@@ -262,15 +252,12 @@ public class ActionBDDImpl implements ActionBDD {
 
             System.out.println("Liste des projets:");
             while (rs.next()) {
-                boolean etat = rs.getBoolean("etat");
-                String etatTexte = etat ? "En cours" : "Achevé";
-
                 System.out.println(
                         "Projet n° : " + rs.getInt("id") +
                                 "\nIntitulé : " + rs.getString("intitule") +
                                 "\nDate de début : " + rs.getDate("date_debut") +
                                 "\nDate de fin prévue : " + rs.getDate("date_fin_prevue") +
-                                "\nÉtat : " + etatTexte + "\n"
+                                "\nÉtat : " + rs.getString("etat") + "\n"
                 );
             }
 
