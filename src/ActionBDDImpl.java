@@ -388,8 +388,10 @@ public class ActionBDDImpl implements ActionBDD {
             }
             pstmt.close();
 
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erreur : Le format de la date est incorrect. Utilisez le format YYYY-MM-DD.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Erreur SQL : " + e.getMessage());
         }
     }
 
@@ -401,11 +403,30 @@ public class ActionBDDImpl implements ActionBDD {
             System.out.print("Id du projet : ");
             int projet = Integer.parseInt(scanner.nextLine());
 
+            PreparedStatement projetId = conn.prepareStatement(
+                    "SELECT COUNT(*) FROM projet WHERE id = ?");
+            projetId.setInt(1, projet);
+            ResultSet rsProjet = projetId.executeQuery();
+            rsProjet.next();
+            if (rsProjet.getInt(1) == 0) {
+                throw new IllegalArgumentException("Erreur : l'ID du projet n'existe pas");
+            }
+
             Scanner sc = new Scanner(System.in);
             System.out.print("Id du programmeur : ");
             int programmeur = Integer.parseInt(scanner.nextLine());
 
 
+            PreparedStatement progId = conn.prepareStatement(
+                    "SELECT COUNT(*) FROM programmeur WHERE id = ?");
+            progId.setInt(1, programmeur);
+            ResultSet rsProg = progId.executeQuery();
+            rsProg.next();
+            if (rsProg.getInt(1) == 0) {
+                throw new IllegalArgumentException("Erreur : l'ID du programmeur n'existe pas");
+            }
+
+            
             PreparedStatement pstmt = conn.prepareStatement(
                     "INSERT INTO programmeur_projet(id, projet_id, programmeur_id) VALUES (id, ?, ?)");
             pstmt.setInt(1, projet);
@@ -420,11 +441,9 @@ public class ActionBDDImpl implements ActionBDD {
 
             pstmt.close();
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
     }
 
