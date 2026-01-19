@@ -30,8 +30,15 @@ public interface ActionBDD {
     // Liste des programmeurs qui travaillent sur le même projet
     void afficherProgrammeursByProjet(Connection conn);
 
+    // Questions statistiques
+    void stats(Connection conn);
+
     void salaireMoyen(Connection conn);
 
     void maxPrime(Connection conn);
+
+    void dureeMoyenneProjet(Connection conn);
+
+    void plusJeuneProgrammeur(Connection conn);
 
 }

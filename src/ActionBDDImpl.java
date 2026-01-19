@@ -544,6 +544,15 @@ public class ActionBDDImpl implements ActionBDD {
         return;
     }
 
+
+
+    /** Questions sur les statistiques*/
+    @Override
+    public void stats(Connection conn){
+        MenuStats menuStats = new MenuStats();
+        menuStats.sousMenu(conn);
+    }
+
     @Override
     public void salaireMoyen(Connection conn) {
         try {
@@ -582,5 +591,40 @@ public class ActionBDDImpl implements ActionBDD {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void dureeMoyenneProjet(Connection conn) {
+        try {
+            Statement stmnt = conn.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT AVG(DATEDIFF(date_fin_prevue, date_debut)) AS duree_moyenne\n" +
+                    "FROM projet;");
+            if (rs.next()) {
+                System.out.println("La durée moyenne des projets est de : " + rs.getDouble(1) + " jours.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void plusJeuneProgrammeur(Connection conn) {
+        try {
+            Statement stmnt = conn.createStatement();
+            ResultSet rs = stmnt.executeQuery(
+                    "SELECT * FROM PROGRAMMEUR WHERE annaissance = (SELECT MAX(annaissance) FROM PROGRAMMEUR)"
+            );
+
+
+            System.out.println("Programmeur la/le plus jeune : ");
+            while (rs.next()) {
+                System.out.println("- Année de naissance : " + rs.getInt("annaissance") + " | " + rs.getString("nom") + " " + rs.getString("prenom"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
