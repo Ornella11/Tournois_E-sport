@@ -18,7 +18,10 @@ public class Menu {
             System.out.println("7. Ajouter un projet");
             System.out.println("8. Assigner un projet à un programmeur");
             System.out.println("9. Obtenir la liste des programmeurs qui travaillent sur le même projet");
-            System.out.println("10. Quitter le programme");
+            System.out.println("10. Afficher le salaire moyen");
+            System.out.println("11. Afficher les informations du programmeur ayant la prime la plus élevé");
+            System.out.println("12. Quitter le programme");
+
             System.out.print("Votre choix : ");
 
             int choice = Integer.parseInt(input.nextLine());
@@ -56,6 +59,12 @@ public class Menu {
                     action.afficherProgrammeursByProjet(conn);
                     break;
                 case 10:
+                    action.salaireMoyen(conn);
+                    break;
+                case 11:
+                    action.maxPrime(conn);
+                    break;
+                case 12:
                     quitter = true;
                     System.out.println("Au revoir !");
                     break;

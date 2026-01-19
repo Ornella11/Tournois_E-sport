@@ -29,4 +29,9 @@ public interface ActionBDD {
 
     // Liste des programmeurs qui travaillent sur le même projet
     void afficherProgrammeursByProjet(Connection conn);
+
+    void salaireMoyen(Connection conn);
+
+    void maxPrime(Connection conn);
+
 }
