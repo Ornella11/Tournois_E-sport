@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class ActionBDDImpl implements ActionBDD {
 
-    /** Connection à la base de donnée */
+    // Connection à la base de donnée
     @Override
     public Connection connectToDatabase() {
         Connection conn = null;
@@ -22,9 +22,9 @@ public class ActionBDDImpl implements ActionBDD {
         return conn;
     }
 
-    /**
-     * Afficher tous les programmeurs
-     */
+
+    //  Afficher tous les programmeurs
+
     @Override
     public String afficherProgrammeurs(Connection conn) {
 
@@ -56,9 +56,8 @@ public class ActionBDDImpl implements ActionBDD {
         return null;
     }
 
-    /**
-     * Afficher un programmeur selon son id
-     */
+
+     // Afficher un programmeur selon son id
     @Override
     public void affichageProgrammeurByID(Connection conn) {
         try {
@@ -77,6 +76,7 @@ public class ActionBDDImpl implements ActionBDD {
                     id = Integer.parseInt(input);
                 } catch (NumberFormatException e) {
                     System.out.println("Erreur : veuillez saisir un entier valide !");
+                    tentatives++;
                     continue;
                 }
 
@@ -102,18 +102,24 @@ public class ActionBDDImpl implements ActionBDD {
                             trouve = true;
                         } else {
                             System.out.println("Recherche KO : ID non trouvé. Réessayez.");
+                            tentatives++;
                         }
                     }
 
                 } catch (SQLException e) {
+                    tentatives++;
                     System.out.println("Erreur SQL : " + e.getMessage());
                     break;
                 }
+                if (!trouve && tentatives >= MAX_TENTATIVES) {
+                    System.out.println("Nombre maximum de tentatives atteint. Retour au menu principal.");
+                    tentatives++;
+                }
             }
-
         } catch (Exception e) {
             System.out.println("Erreur inattendue : " + e.getMessage());
         }
+
     }
 
 
@@ -143,17 +149,22 @@ public class ActionBDDImpl implements ActionBDD {
                     System.out.println("Suppression réussie !");
                     suppressionReussie = true;
                 } else {
+                    tentatives++;
                     throw new IllegalArgumentException("Suppression KO. Saisissez à nouveau l'id :");
                 }
 
             } catch (NumberFormatException e) {
                 System.out.println("Erreur : Veuillez saisir un nombre valide.");
+                tentatives++;
 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                tentatives++;
+
 
             } catch (SQLException e) {
                 System.out.println("Erreur SQL : " + e.getMessage());
+                tentatives++;
                 break;
 
             }
@@ -174,36 +185,42 @@ public class ActionBDDImpl implements ActionBDD {
                 System.out.print("Nom du programmeur: ");
                 String nom = scanner.nextLine().trim();
                 if (nom.isEmpty()) {
+                    tentatives++;
                     throw new IllegalArgumentException("Le nom ne peut pas être vide.");
                 }
 
                 System.out.print("Prénom du programmeur: ");
                 String prenom = scanner.nextLine().trim();
                 if (prenom.isEmpty()) {
+                    tentatives++;
                     throw new IllegalArgumentException("Le prénom ne peut pas être vide.");
                 }
 
                 System.out.print("Adresse du programmeur: ");
                 String adresse = scanner.nextLine().trim();
                 if (adresse.isEmpty()) {
+                    tentatives++;
                     throw new IllegalArgumentException("L'adresse ne peut pas être vide.");
                 }
 
                 System.out.print("Pseudo du programmeur: ");
                 String pseudo = scanner.nextLine().trim();
                 if (pseudo.isEmpty()) {
+                    tentatives++;
                     throw new IllegalArgumentException("Le pseudo ne peut pas être vide.");
                 }
 
                 System.out.print("Responsable du programmeur: ");
                 String responsable = scanner.nextLine().trim();
                 if (responsable.isEmpty()) {
+                    tentatives++;
                     throw new IllegalArgumentException("Le responsable ne peut pas être vide.");
                 }
 
                 System.out.print("Hobby du programmeur: ");
                 String hobby = scanner.nextLine().trim();
                 if (hobby.isEmpty()) {
+                    tentatives++;
                     throw new IllegalArgumentException("Le hobby ne peut pas être vide.");
                 }
 
@@ -238,18 +255,22 @@ public class ActionBDDImpl implements ActionBDD {
                     System.out.println("AJOUT REUSSI !");
                     ajoutReussie = true;
                 } else {
+                    tentatives++;
                     throw new SQLException("Aucune ligne insérée.");
                 }
                 pstmt.close();
 
 
             } catch (NumberFormatException e) {
+                tentatives++;
                 System.out.println("Erreur : Veuillez saisir des valeurs numériques valides.");
 
             } catch (IllegalArgumentException e) {
+                tentatives++;
                 System.out.println("Erreur : " + e.getMessage());
 
             } catch (SQLException e) {
+                tentatives++;
                 System.out.println("Erreur SQL : " + e.getMessage());
 
             }
@@ -278,6 +299,7 @@ public class ActionBDDImpl implements ActionBDD {
                 ResultSet rsSelect = selectStmt.executeQuery();
 
                 if (!rsSelect.next()) {
+                    tentatives++;
                     throw new IllegalArgumentException("Aucun programmeur trouvé avec cet ID.");
                 }
 
@@ -287,6 +309,7 @@ public class ActionBDDImpl implements ActionBDD {
                 double nouveauSalaire = Double.parseDouble(scanner.nextLine().trim());
 
                 if (nouveauSalaire < 0) {
+                    tentatives++;
                     throw new IllegalArgumentException("Le salaire ne peut pas être négatif.");
                 }
 
@@ -304,6 +327,7 @@ public class ActionBDDImpl implements ActionBDD {
                     System.out.println("Nouveau salaire : " + nouveauSalaire);
                     modificationReussie = true;
                 } else {
+                    tentatives++;
                     throw new SQLException("Aucune ligne modifiée.");
                 }
 
@@ -316,6 +340,7 @@ public class ActionBDDImpl implements ActionBDD {
                 tentatives++;
 
             } catch (SQLException e) {
+                tentatives++;
                 System.out.println("Erreur SQL : " + e.getMessage());
                 break;
 
@@ -389,6 +414,7 @@ public class ActionBDDImpl implements ActionBDD {
             pstmt.close();
 
         } catch (IllegalArgumentException e) {
+
             System.out.println("Erreur : Le format de la date est incorrect. Utilisez le format YYYY-MM-DD.");
         } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
@@ -398,53 +424,83 @@ public class ActionBDDImpl implements ActionBDD {
     /** Assigner un projet à un programmeur */
     @Override
     public void assignerProjet(Connection conn) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
+            // Affichage de la liste des projets
+            pstmt = conn.prepareStatement("SELECT id, intitule FROM projet");
+            rs = pstmt.executeQuery();
+
+            System.out.println("Choisir un projet : ");
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + " : " + rs.getString("intitule"));
+            }
+            rs.close();
+            pstmt.close();
+
+            // Saisie et validation du projet
             Scanner scanner = new Scanner(System.in);
             System.out.print("Id du projet : ");
             int projet = Integer.parseInt(scanner.nextLine());
 
-            PreparedStatement projetId = conn.prepareStatement(
-                    "SELECT COUNT(*) FROM projet WHERE id = ?");
-            projetId.setInt(1, projet);
-            ResultSet rsProjet = projetId.executeQuery();
-            rsProjet.next();
-            if (rsProjet.getInt(1) == 0) {
+            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM projet WHERE id = ?");
+            pstmt.setInt(1, projet);
+            rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getInt(1) == 0) {
                 throw new IllegalArgumentException("Erreur : l'ID du projet n'existe pas");
             }
+            rs.close();
+            pstmt.close();
 
-            Scanner sc = new Scanner(System.in);
+            // Saisie et validation du programmeur
             System.out.print("Id du programmeur : ");
             int programmeur = Integer.parseInt(scanner.nextLine());
 
+            pstmt = conn.prepareStatement(
+                    "SELECT id, nom, prenom FROM programmeur WHERE id = ?");
+            pstmt.setInt(1, programmeur);
+            rs = pstmt.executeQuery();
 
-            PreparedStatement progId = conn.prepareStatement(
-                    "SELECT COUNT(*) FROM programmeur WHERE id = ?");
-            progId.setInt(1, programmeur);
-            ResultSet rsProg = progId.executeQuery();
-            rsProg.next();
-            if (rsProg.getInt(1) == 0) {
+            if (!rs.next()) {
                 throw new IllegalArgumentException("Erreur : l'ID du programmeur n'existe pas");
             }
 
-            
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO programmeur_projet(id, projet_id, programmeur_id) VALUES (id, ?, ?)");
+            // Récupération des données du programmeur pour l'affichage
+            int progId = rs.getInt("id");
+            String nom = rs.getString("nom");
+            String prenom = rs.getString("prenom");
+            rs.close();
+            pstmt.close();
+
+            // Insertion de l'assignation
+            pstmt = conn.prepareStatement(
+                    "INSERT INTO programmeur_projet(projet_id, programmeur_id) VALUES (?, ?)");
             pstmt.setInt(1, projet);
             pstmt.setInt(2, programmeur);
-            int rs = pstmt.executeUpdate();
+            int nbLignes = pstmt.executeUpdate();
 
-            if (rs > 0) {
+            if (nbLignes > 0) {
                 System.out.println("Programmeur assigné !");
+                System.out.println("Projet n° " + projet + " :");
+                System.out.println("Id du programmeur : " + progId);
+                System.out.println("Nom du programmeur : " + nom);
+                System.out.println("Prénom du programmeur :" + prenom);
             } else {
                 throw new IllegalArgumentException("Insertion KO.");
             }
 
-            pstmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
 
@@ -486,6 +542,45 @@ public class ActionBDDImpl implements ActionBDD {
         }
 
         return;
+    }
+
+    @Override
+    public void salaireMoyen(Connection conn) {
+        try {
+            Statement stmnt = conn.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT AVG(salaire) FROM PROGRAMMEUR");
+            if (rs.next()) {
+                System.out.println("Salaire moyen des programmeurs : " + rs.getDouble(1));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void maxPrime(Connection conn) {
+        try {
+            Statement stmnt = conn.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM PROGRAMMEUR WHERE prime =  (SELECT MAX(prime) FROM PROGRAMMEUR)");
+            if (rs.next()) {
+                System.out.println("Informations du programmeur ayant la prime la plus élevée : ");
+                System.out.println("Id : " + rs.getInt("id"));
+                System.out.println("Nom : " + rs.getString("nom"));
+                System.out.println("Prénom : " + rs.getString("prenom"));
+                System.out.println("Adresse : " + rs.getString("adresse"));
+                System.out.println("Pseudo : " + rs.getString("pseudo"));
+                System.out.println("Responsable : " + rs.getString("responsable"));
+                System.out.println("Hobby : " + rs.getString("hobby"));
+                System.out.println("Annaissance : " + rs.getInt("annaissance"));
+                System.out.println("Salaire : " + rs.getDouble("salaire"));
+                System.out.println("Prime : " + rs.getDouble("prime"));
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
