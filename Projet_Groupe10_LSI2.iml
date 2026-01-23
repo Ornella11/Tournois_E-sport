@@ -14,10 +14,10 @@
     <orderEntry type="library" name="javafx.media" level="project" />
     <orderEntry type="library" name="javafx.swing" level="project" />
     <orderEntry type="library" name="javafx.web" level="project" />
+    <orderEntry type="library" name="javafx-swt" level="project" />
     <orderEntry type="library" name="jdk.jsobject" level="project" />
     <orderEntry type="library" name="jfx.incubator.input" level="project" />
     <orderEntry type="library" name="jfx.incubator.richtext" level="project" />
     <orderEntry type="library" name="javafx.base" level="project" />
-    <orderEntry type="library" name="javafx-swt" level="project" />
   </component>
 </module>

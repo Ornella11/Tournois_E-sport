@@ -1,3 +1,7 @@
+/**
+ * Classe représentant d'afficher les caractéristiques
+ * d'un programmeur.
+ */
 
 public class Programmeur {
     Integer id;
