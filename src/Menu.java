@@ -18,7 +18,7 @@ public class Menu {
             System.out.println("7. Ajouter un projet");
             System.out.println("8. Assigner un projet à un programmeur");
             System.out.println("9. Obtenir la liste des programmeurs qui travaillent sur le même projet");
-            System.out.println("10. Infomartions statistiques");
+            System.out.println("10. Informations statistiques");
             System.out.println("11. Quitter le programme");
 
             System.out.print("Votre choix : ");
