@@ -2,11 +2,15 @@ import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
+/**
+ * Cette classe gère l'affichage, l'ajout, la suppression et la modification
+ * des programmeurs et des projets, en utilisant JDBC pour communiquer avec MySQL.
+ */
 public class ActionBDDImpl implements ActionBDD {
 
     /**
-     *Connection à la base de donnée
+     * Connexion à la base de donnée
+     * @return la connexion active à la base de données
      */
     @Override
     public Connection connectToDatabase() {
@@ -25,10 +29,13 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
 
-    //  Afficher tous les programmeurs
     /**
-     *Cette méthode permet d'afficher
+     * Liste des programmeurs
+     * @param conn connexion active à la base de données
+     * @return null
+     * @exception SQLException si une erreur SQL survient lors de l'exécution
      */
+
     @Override
     public String afficherProgrammeurs(Connection conn) {
 
@@ -61,7 +68,13 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
 
-     // Afficher un programmeur selon son id
+    /**
+     * Affichage des programmeurs par leur ID
+     * @param conn connexion active à la base de données
+     * @exception NumberFormatException si l'ID saisi n'est pas un entier
+     * @exception SQLException si une erreur SQL survient
+     * @exception Exception pour toute autre erreur inattendue
+     */
     @Override
     public void affichageProgrammeurByID(Connection conn) {
         try {
@@ -128,7 +141,11 @@ public class ActionBDDImpl implements ActionBDD {
 
 
     /**
-     * Supprimer un programmeur
+     * Supprime un programmeur
+     * @param conn connexion active à la base de données
+     * @exception NumberFormatException si l'ID saisi n'est pas un entier
+     * @exception SQLException si une erreur SQL survient
+     * @exception IllegalArgumentException si la suppression échoue
      */
     @Override
     public void supprimerProgrammeur(Connection conn) {
@@ -176,7 +193,11 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
     /**
-     * Ajouter un programmeur
+     * Ajoute un nouveau programmeur
+     * @param conn connexion active à la base de données
+     * @exception NumberFormatException si salaire, prime ou année de naissance ne sont pas valides
+     * @exception SQLException si l'insertion échoue
+     * @exception IllegalArgumentException si des champs obligatoires sont vides
      */
     @Override
     public void ajouterProgrammeur(Connection conn) {
@@ -282,7 +303,11 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
     /**
-     * Modifier le salaire
+     * Modifie le salaire d'un programmeur
+     * @param conn connexion active à la base de données
+     * @exception NumberFormatException si le salaire ou l'ID saisi ne sont pas valides
+     * @exception SQLException si l'update échoue
+     * @exception IllegalArgumentException si le programmeur n'existe pas ou salaire invalide
      */
     @Override
     public void modifierSalaire(Connection conn) {
@@ -357,7 +382,11 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
 
-    /** Afficher la liste des projets */
+    /**
+     * Affiche la liste des projets
+     * @param conn connexion active à la base de données
+     * @exception SQLException si une erreur SQL survient
+     */
     @Override
     public void ListeProjet(Connection conn) {
         try {
@@ -383,7 +412,12 @@ public class ActionBDDImpl implements ActionBDD {
         return;
     }
 
-    /** Ajouter un projet */
+    /**
+     * Méthode permettant d'ajouter un projet
+     * @param conn connexion active à la base de données
+     * @exception IllegalArgumentException si le format de date est invalide
+     * @exception SQLException si l'insertion échoue
+     */
     @Override
     public void AjoutProjet(Connection conn){
         Scanner scanner = new Scanner(System.in);
@@ -425,7 +459,13 @@ public class ActionBDDImpl implements ActionBDD {
         }
     }
 
-    /** Assigner un projet à un programmeur */
+    /**
+     * Méthode permattant d'assigné un projet à un programmeur.
+     *
+     * @param conn connexion active à la base de données
+     * @exception IllegalArgumentException si l'ID du projet ou du programmeur n'existe pas
+     * @exception SQLException si l'insertion échoue
+     */
     @Override
     public void assignerProjet(Connection conn) {
         PreparedStatement pstmt = null;
@@ -508,7 +548,11 @@ public class ActionBDDImpl implements ActionBDD {
     }
 
 
-    /** Liste des programmeurs qui travaillent sur le même projet */
+    /**
+     *  Liste des programmeurs qui travaillent sur le même projet
+     * @param conn connexion active à la base de données
+     * @exception SQLException si une erreur SQL survient
+     */
     @Override
     public void afficherProgrammeursByProjet(Connection conn) {
         Scanner scanner = new Scanner(System.in);
@@ -544,19 +588,26 @@ public class ActionBDDImpl implements ActionBDD {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return;
     }
 
 
 
-    /** Questions sur les statistiques*/
+    /**
+     *  Menu vers les questions statistiques
+     *  @param conn connexion active à la base de données
+     */
     @Override
     public void stats(Connection conn){
         MenuStats menuStats = new MenuStats();
         menuStats.sousMenu(conn);
     }
 
+    /**
+     *  Salaire moyen de tout les programmeurs
+     * @param conn connexion active à la base de données
+     * @exception RuntimeException si une erreur SQL survient
+     */
     @Override
     public void salaireMoyen(Connection conn) {
         try {
@@ -571,6 +622,11 @@ public class ActionBDDImpl implements ActionBDD {
         }
     }
 
+    /**
+     *  Prime maximum à un programmeur
+     * @param conn connexion active à la base de données
+     * @exception RuntimeException si une erreur SQL survient
+     */
     @Override
     public void maxPrime(Connection conn) {
         try {
@@ -596,6 +652,11 @@ public class ActionBDDImpl implements ActionBDD {
         }
     }
 
+    /**
+     *  Durée moyenne des projets
+     * @param conn connexion active à la base de données
+     * @exception RuntimeException si une erreur SQL survient
+     */
     @Override
     public void dureeMoyenneProjet(Connection conn) {
         try {
@@ -611,6 +672,11 @@ public class ActionBDDImpl implements ActionBDD {
         }
     }
 
+    /**
+     *  Affichage du plus jeune programmeur
+     * @param conn connexion active à la base de données
+     * @exception RuntimeException si une erreur SQL survient
+     */
     @Override
     public void plusJeuneProgrammeur(Connection conn) {
         try {

@@ -1,6 +1,11 @@
 import java.sql.Connection;
 import java.util.Scanner;
 
+/**
+ * Cette classe est un sous menu qui permet d'afficher différentes informations statistiques
+ * sur les programmeurs et les projets.
+ */
+
 public class MenuStats {
     Scanner input = new Scanner(System.in);
 

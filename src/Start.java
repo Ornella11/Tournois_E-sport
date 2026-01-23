@@ -1,3 +1,6 @@
+/**
+ * Cette classe permet de lancer le menu principal.
+ */
 public class Start {
 
     /**
