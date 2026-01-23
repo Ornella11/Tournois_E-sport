@@ -1,12 +1,22 @@
 import java.sql.Connection;
 
 public interface ActionBDD {
-    // Connexion à la base de donnée
+    /**
+     *
+     * Cette méthode permet de se connecter à la base de donnée
+     */
     Connection connectToDatabase();
 
+    /**
+     *
+     * Cette méthode permet d'afficher la liste des programmeurs
+     */
     String afficherProgrammeurs(Connection conn);
 
-    // Affichage des programmeurs
+    /**
+     *
+     * Cette méthode permet d'afficher un programmeur selon son id
+     */
     void affichageProgrammeurByID(Connection conn);
 
     // Supprimer un programmeur
