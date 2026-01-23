@@ -1,6 +1,12 @@
 import java.sql.Connection;
 import java.util.Scanner;
 
+/**
+ * Classe gérant le menu principal de l'application.
+ * Elle permet d'accéder aux différentes fonctionnalités liées
+ * à la gestion des programmeurs et des projets via la base de données.
+ */
+
 public class Menu {
     Scanner input = new Scanner(System.in);
 

@@ -1,5 +1,10 @@
 import java.util.Date;
 
+/**
+ * Classe représentant un projet avec son intitulé,
+ * ses dates de début et fin de projet,
+ * et son état d'avancement.
+ */
 public class Projet {
     public int id;
     public String intitule;

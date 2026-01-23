@@ -13,8 +13,7 @@ import java.io.*;
 import java.sql.Connection;
 
 /**
- *
- * Cette application sert d'interface graphique pour gérer des programmeurs et des projets via une base de données0
+ * Cette application sert d'interface graphique pour gérer des programmeurs et des projets via une base de données.
  */
 public class Main extends Application {
 
