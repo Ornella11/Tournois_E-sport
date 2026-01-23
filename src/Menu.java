@@ -3,7 +3,22 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in);
+    /**
+     * Cette méthode permet d’afficher le menu et d’associer chaque option aux méthodes correspondantes :
+     * {@code connectToDatabase()}
+     * {@code afficherProgrammeurs()}
+     * {@code affichageProgrammeurByID()}
+     * {@code ajouterProgrammeur()}
+     * {@code modifierSalaire()}
+     * {@code ListeProjet()}
+     * {@code AjoutProjet()}
+     * {@code ListeProjet()}
+     * {@code assignerProjet()}
+     * {@code afficherProgrammeursByProjet()}
+     * {@code stats()}
 
+
+     */
     public void demarrer() {
         boolean quitter = false;
 

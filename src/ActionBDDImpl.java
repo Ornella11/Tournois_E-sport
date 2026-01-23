@@ -5,7 +5,9 @@ import java.util.Scanner;
 
 public class ActionBDDImpl implements ActionBDD {
 
-    // Connection à la base de donnée
+    /**
+     *Connection à la base de donnée
+     */
     @Override
     public Connection connectToDatabase() {
         Connection conn = null;
@@ -24,7 +26,9 @@ public class ActionBDDImpl implements ActionBDD {
 
 
     //  Afficher tous les programmeurs
-
+    /**
+     *Cette méthode permet d'afficher
+     */
     @Override
     public String afficherProgrammeurs(Connection conn) {
 
