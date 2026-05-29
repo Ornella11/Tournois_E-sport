@@ -9,38 +9,19 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner input = new Scanner(System.in);
-    /**
-     * Cette méthode permet d’afficher le menu et d’associer chaque option aux méthodes correspondantes :
-     * {@code connectToDatabase()}
-     * {@code afficherProgrammeurs()}
-     * {@code affichageProgrammeurByID()}
-     * {@code ajouterProgrammeur()}
-     * {@code modifierSalaire()}
-     * {@code ListeProjet()}
-     * {@code AjoutProjet()}
-     * {@code ListeProjet()}
-     * {@code assignerProjet()}
-     * {@code afficherProgrammeursByProjet()}
-     * {@code stats()}
 
-
-     */
     public void demarrer() {
         boolean quitter = false;
 
         while (!quitter) {
             System.out.println("\n*********  MENU   ************* ");
-            System.out.println("1. Afficher tous les programmeurs ");
-            System.out.println("2. Afficher un programmeur ");
-            System.out.println("3. Supprimer un programmeur");
-            System.out.println("4. Ajouter un programmeur");
-            System.out.println("5. Modifier le salaire");
-            System.out.println("6. Afficher la liste des projets");
-            System.out.println("7. Ajouter un projet");
-            System.out.println("8. Assigner un projet à un programmeur");
-            System.out.println("9. Obtenir la liste des programmeurs qui travaillent sur le même projet");
-            System.out.println("10. Informations statistiques");
-            System.out.println("11. Quitter le programme");
+            System.out.println("1. Gestion des joueurs ");
+            System.out.println("2. Gestion des équipes ");
+            System.out.println("3. Gestion des tournois");
+            System.out.println("4. Saisir le résultat d'un match");
+            System.out.println("5. Classement d'un tournoi");
+            System.out.println("6. Statistiques d'un joueur");
+            System.out.println("7. Quitter");
 
             System.out.print("Votre choix : ");
 
