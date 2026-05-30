@@ -13,10 +13,9 @@ public class JoueurDao {
 
 
     public static void main(String[] args) throws SQLException {
-        JoueurDao dao = new JoueurDao();  // instancier le DAO
-//        dao.ajouterJoueur();
-        dao.listerJoueurs();
-        dao.supprimerJoueur();
+        JoueurDao dao = new JoueurDao();
+
+        dao.modifierJoueur();
     }
 
     public JoueurDao() throws SQLException {
@@ -157,7 +156,7 @@ public class JoueurDao {
                     pstmt.setInt(1, id);
 
                     try (ResultSet rs = pstmt.executeQuery()) {
-                        if (rs.next()) {  // on lit la ligne
+                        if (rs.next()) {
                             j = new Joueur(
                                     rs.getInt("id_joueur"),
                                     rs.getString("pseudo"),
@@ -192,9 +191,86 @@ public class JoueurDao {
     }
 
     // Modifier les informations d'un joueur
-    public boolean modifierJoueur(Joueur j) throws SQLException {
+    public void modifierJoueur() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
 
-        return false;
+        System.out.print("Entrez l'ID du joueur à modifier : ");
+        int idJoueur = scanner.nextInt();
+        scanner.nextLine();
+
+        Joueur j = trouverJoueurParId(idJoueur);
+        if (j == null) {
+            System.out.println("Aucun joueur trouvé avec l'ID : " + idJoueur);
+            return;
+        }
+
+        System.out.println("Laissez vide pour conserver la valeur actuelle.");
+
+        String sql = """
+            UPDATE joueurs
+            SET pseudo         = ?,
+                nom_joueur     = ?,
+                prenom_joueur  = ?,
+                nationalite    = ?,
+                niveau_elo     = ?
+            WHERE id_joueur = ?
+            """;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            System.out.print("Pseudo du joueur: ");
+            String pseudo = scanner.nextLine().trim();
+            pstmt.setString(1, pseudo);
+
+            System.out.print("Nom du joueur: ");
+            String nom = scanner.nextLine().trim();
+            pstmt.setString(2, nom);
+
+            System.out.print("Prénom du joueur: ");
+            String prenom = scanner.nextLine().trim();
+            pstmt.setString(3, prenom);
+
+            System.out.print("Nationalité du joueur: ");
+            String nationalite = scanner.nextLine().trim();
+            pstmt.setString(4, nationalite);
+
+            System.out.print("Niveau du joueur: ");
+            int niveau_elo = Integer.parseInt(scanner.nextLine().trim());
+            pstmt.setInt(5, niveau_elo);
+
+            pstmt.setInt(6, idJoueur);
+
+            int lignesModifiees = pstmt.executeUpdate();
+            if (lignesModifiees > 0) {
+                System.out.println("Joueur modifié avec succès !");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+
+    }
+
+    // Méthode utilitaire pour retrouver un joueur par son ID
+    private Joueur trouverJoueurParId(int id) throws SQLException {
+        String sql = "SELECT * FROM joueurs WHERE id_joueur = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new Joueur(
+                        rs.getInt("id_joueur"),
+                        rs.getString("pseudo"),
+                        rs.getString("nom_joueur"),
+                        rs.getString("prenom_joueur"),
+                        rs.getDate("date_naissance"),
+                        rs.getString("nationalite"),
+                        rs.getInt("niveau_elo")
+                );
+            }
+        }
+        return null;
     }
 
     // Supprimer un joueur

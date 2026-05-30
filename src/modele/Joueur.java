@@ -7,7 +7,7 @@ public class Joueur {
     String pseudo;
     String nom_joueur;
     String prenom_joueur;
-    Date date_naissance;
+    public Date date_naissance;
     String nationalite;
     Integer niveau_elo;
 
