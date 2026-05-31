@@ -98,9 +98,13 @@ public class JoueurDao {
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT * FROM joueurs");
 
-            System.out.println("**** Liste des joueur **** :");
+            System.out.println("\n**** Liste des joueurs ****");
+            System.out.printf("%-5s %-20s %-15s %-15s %-15s %-15s %-10s%n",
+                    "ID", "Pseudo", "Nom", "Prénom", "Date naissance", "Nationalité", "ELO");
+            System.out.println("-".repeat(100));
+
             while (rs.next()) {
-                Joueur j = new Joueur(
+                System.out.printf("%-5d %-20s %-15s %-15s %-15s %-15s %-10d%n",
                         rs.getInt("id_joueur"),
                         rs.getString("pseudo"),
                         rs.getString("nom_joueur"),
@@ -108,18 +112,15 @@ public class JoueurDao {
                         rs.getDate("date_naissance"),
                         rs.getString("nationalite"),
                         rs.getInt("niveau_elo")
-
                 );
-                System.out.print(j);
-                System.out.print("----------------------");
             }
+            System.out.println("-".repeat(100));
 
         } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
         }
         return null;
     }
-
     // Modifier les informations d'un joueur
     public void modifierJoueur() throws SQLException {
         Scanner scanner = new Scanner(System.in);

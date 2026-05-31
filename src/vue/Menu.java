@@ -78,7 +78,7 @@ public class Menu extends Application {
                 "3. Retour");
 
         VBox menuStats = creerSousMenu("Statistiques",
-                "1. Saisir les statistiques d'un match",
+                "1. Saisir les statistiques d'un joueur",
                 "2. Afficher les statistiques d'un match",
                 "3. Retour");
 

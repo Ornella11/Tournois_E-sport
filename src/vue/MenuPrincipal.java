@@ -119,7 +119,7 @@ public class MenuPrincipal {
                     boolean quitterStats = false;
                     while (!quitterStats) {
                         System.out.println("\nChoisir : ");
-                        System.out.println("1. Saisir les statistiques d'un match");
+                        System.out.println("1. Saisir les statistiques d'un joueur");
                         System.out.println("2. Afficher les statistiques d'un match");
                         System.out.println("3. Quitter");
                         System.out.print("Votre choix : ");
