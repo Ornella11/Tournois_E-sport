@@ -2,9 +2,7 @@ package dao;
 
 import util.ConnexionBDD;
 
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -161,5 +159,50 @@ public class MatchDao {
             }
         }
 
+    }
+
+    public void afficherStatistiquesMatch() {
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("Id du match : ");
+            int id_match = Integer.parseInt(scanner.nextLine().trim());
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT j.pseudo, s.nb_kills, s.nb_deaths, s.nb_assists, s.score " +
+                            "FROM Statistiques s " +
+                            "JOIN Joueurs j ON s.id_joueur = j.id_joueur " +
+                            "WHERE s.id_match = ?"
+            );
+
+            pstmt.setInt(1, id_match);
+            ResultSet rs = pstmt.executeQuery();
+
+            boolean found = false;
+            System.out.println("\n--- Statistiques du match " + id_match + " ---");
+            System.out.printf("%-20s %-10s %-10s %-10s %-10s%n",
+                    "Joueur", "Kills", "Deaths", "Assists", "Score");
+            System.out.println("-".repeat(60));
+
+            while (rs.next()) {
+                found = true;
+                System.out.printf("%-20s %-10d %-10d %-10d %-10d%n",
+                        rs.getString("pseudo"),
+                        rs.getInt("nb_kills"),
+                        rs.getInt("nb_deaths"),
+                        rs.getInt("nb_assists"),
+                        rs.getInt("score")
+                );
+            }
+
+            if (!found) {
+                System.out.println("Aucune statistique trouvée pour ce match.");
+            }
+
+            rs.close();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
     }
 }

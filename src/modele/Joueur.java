@@ -19,6 +19,7 @@ public class Joueur {
         this.prenom_joueur = prenom_joueur;
         this.date_naissance = date_naissance;
         this.nationalite = nationalite;
+        this.niveau_elo = niveau_elo;
 
     }
 

@@ -29,7 +29,10 @@ public class Menu extends Application {
     private ConsultationDao consultation = new ConsultationDao();
     private MatchDao match = new MatchDao();
 
-    public MenuPrincipal() throws SQLException {
+    public Menu() throws SQLException {
+    }
+
+    public void Menu() throws SQLException {
     }
 
     @Override
@@ -118,15 +121,33 @@ public class Menu extends Application {
         btnQuitter.setOnAction(e -> Platform.exit());
 
         // ---- ACTIONS SOUS-MENU JOUEURS ----
-        bouton(menuJoueurs, 0).setOnAction(e -> runAction(() -> joueur.ajouterJoueur()));
+        bouton(menuJoueurs, 0).setOnAction(e -> runAction(() -> {
+            try {
+                joueur.ajouterJoueur();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }));
         bouton(menuJoueurs, 1).setOnAction(e -> runAction(() -> {
             try { joueur.listerJoueurs(); } catch (Exception ex) { System.out.println("Erreur : " + ex.getMessage()); }
         }));
         bouton(menuJoueurs, 2).setOnAction(e -> runAction(() -> {
             try { consultation.rechercherParMotCle(); } catch (Exception ex) { System.out.println("Erreur : " + ex.getMessage()); }
         }));
-        bouton(menuJoueurs, 3).setOnAction(e -> runAction(() -> joueur.modifierJoueur()));
-        bouton(menuJoueurs, 4).setOnAction(e -> runAction(() -> joueur.supprimerJoueur()));
+        bouton(menuJoueurs, 3).setOnAction(e -> runAction(() -> {
+            try {
+                joueur.modifierJoueur();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }));
+        bouton(menuJoueurs, 4).setOnAction(e -> runAction(() -> {
+            try {
+                joueur.supprimerJoueur();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }));
         bouton(menuJoueurs, 5).setOnAction(e -> retourMenu(menuJoueurs, menuPrincipal));
 
         // ---- ACTIONS SOUS-MENU EQUIPES ----

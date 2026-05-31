@@ -6,16 +6,15 @@ import util.ConnexionBDD;
 
 public class ConsultationDao {
     private Connection conn;
-    private Scanner scanner;
 
     public ConsultationDao() throws SQLException {
         this.conn = ConnexionBDD.getConnection();
-        this.scanner = new Scanner(System.in);
     }
 
     // Recherche d'un joueur par mot clé
     public void rechercherParMotCle() {
         System.out.print("Entrez un mot clé (pseudo ou nom d'équipe) : ");
+        Scanner scanner = new Scanner(System.in);
         String saisie = scanner.nextLine().trim();
 
         if (saisie.isEmpty()) {
@@ -70,6 +69,7 @@ public class ConsultationDao {
     // Statistiques équipe
     public void afficherStatsEquipe() {
         System.out.print("Entrez l'ID de l'équipe pour voir ses statistiques : ");
+        Scanner scanner = new Scanner(System.in);
         String inputId = scanner.nextLine().trim();
 
         if (inputId.isEmpty()) {
@@ -132,6 +132,7 @@ public class ConsultationDao {
     // Classement
     public void afficherClassementTournoi() {
         System.out.print("Entrez l'ID du tournoi : ");
+        Scanner scanner = new Scanner(System.in);
         String inputId = scanner.nextLine().trim();
 
         if (inputId.isEmpty()) {
@@ -195,6 +196,7 @@ public class ConsultationDao {
     // Palmarès
     public void afficherPalmaresJoueur() {
         System.out.print("Entrez le pseudo : ");
+        Scanner scanner = new Scanner(System.in);
         String pseudo = scanner.nextLine().trim();
 
         if (pseudo.isEmpty()) {
@@ -250,11 +252,56 @@ public class ConsultationDao {
         }
     }
 
+    public void afficherStatistiquesMatch() {
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("Id du match : ");
+            int id_match = Integer.parseInt(scanner.nextLine().trim());
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT j.pseudo, s.nb_kills, s.nb_deaths, s.nb_assists, s.score " +
+                            "FROM Statistiques s " +
+                            "JOIN Joueurs j ON s.id_joueur = j.id_joueur " +
+                            "WHERE s.id_match = ?"
+            );
+
+            pstmt.setInt(1, id_match);
+            ResultSet rs = pstmt.executeQuery();
+
+            boolean found = false;
+            System.out.println("\n--- Statistiques du match " + id_match + " ---");
+            System.out.printf("%-20s %-10s %-10s %-10s %-10s%n",
+                    "Joueur", "Kills", "Deaths", "Assists", "Score");
+            System.out.println("-".repeat(60));
+
+            while (rs.next()) {
+                found = true;
+                System.out.printf("%-20s %-10d %-10d %-10d %-10d%n",
+                        rs.getString("pseudo"),
+                        rs.getInt("nb_kills"),
+                        rs.getInt("nb_deaths"),
+                        rs.getInt("nb_assists"),
+                        rs.getInt("score")
+                );
+            }
+
+            if (!found) {
+                System.out.println("Aucune statistique trouvée pour ce match.");
+            }
+
+            rs.close();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+    }
+
     // TEST !
     public static void main(String[] args) {
         try {
             ConsultationDao dao = new ConsultationDao();
-            dao.afficherPalmaresJoueur();
+            dao.afficherClassementTournoi();
         } catch (SQLException e) {
             System.out.println("Erreur de connexion : " + e.getMessage());
         }
