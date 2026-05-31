@@ -11,13 +11,6 @@ import util.ConnexionBDD;
 public class JoueurDao {
     Connection conn = ConnexionBDD.getConnection();
 
-
-    public static void main(String[] args) throws SQLException {
-        JoueurDao dao = new JoueurDao();
-
-        dao.modifierJoueur();
-    }
-
     public JoueurDao() throws SQLException {
     }
 
@@ -105,9 +98,13 @@ public class JoueurDao {
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT * FROM joueurs");
 
-            System.out.println("**** Liste des joueur **** :");
+            System.out.println("\n**** Liste des joueurs ****");
+            System.out.printf("%-5s %-20s %-15s %-15s %-15s %-15s %-10s%n",
+                    "ID", "Pseudo", "Nom", "Prénom", "Date naissance", "Nationalité", "ELO");
+            System.out.println("-".repeat(100));
+
             while (rs.next()) {
-                Joueur j = new Joueur(
+                System.out.printf("%-5d %-20s %-15s %-15s %-15s %-15s %-10d%n",
                         rs.getInt("id_joueur"),
                         rs.getString("pseudo"),
                         rs.getString("nom_joueur"),
@@ -115,81 +112,15 @@ public class JoueurDao {
                         rs.getDate("date_naissance"),
                         rs.getString("nationalite"),
                         rs.getInt("niveau_elo")
-
                 );
-                System.out.print(j);
-                System.out.print("----------------------");
             }
+            System.out.println("-".repeat(100));
 
         } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
         }
         return null;
     }
-
-    // Rechercher un joueur par pseudo
-    public Joueur rechercherParPseudo()
-            throws SQLException {
-        Joueur j = null;
-        try {
-            Scanner scanner = new Scanner(System.in);
-            boolean trouve = false;
-            final int MAX_TENTATIVES = 3;
-            int tentatives = 0;
-
-            while (!trouve && tentatives < MAX_TENTATIVES) {
-                System.out.print("ID du joueur à afficher : ");
-
-                String input = scanner.nextLine();
-                int id;
-
-                try {
-                    id = Integer.parseInt(input);
-                } catch (NumberFormatException e) {
-                    System.out.println("Erreur : veuillez saisir un entier valide !");
-                    tentatives++;
-                    continue;
-                }
-
-                String sql = "SELECT * FROM `joueurs` WHERE id_joueur = ?";
-                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                    pstmt.setInt(1, id);
-
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        if (rs.next()) {
-                            j = new Joueur(
-                                    rs.getInt("id_joueur"),
-                                    rs.getString("pseudo"),
-                                    rs.getString("nom_joueur"),
-                                    rs.getString("prenom_joueur"),
-                                    rs.getDate("date_naissance"),
-                                    rs.getString("nationalite"),
-                                    rs.getInt("niveau_elo")
-                            );
-                            System.out.println(j);
-                            trouve = true;
-                        } else {
-                            System.out.println("Recherche KO : ID non trouvé. Réessayez.");
-                            tentatives++;
-                        }
-                    }
-
-                } catch (SQLException e) {
-                    tentatives++;
-                    System.out.println("Erreur SQL : " + e.getMessage());
-                    break;
-                }
-                if (!trouve && tentatives >= MAX_TENTATIVES) {
-                    System.out.println("Nombre maximum de tentatives atteint. Retour au menu principal.");
-                    tentatives++;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Erreur inattendue : " + e.getMessage());
-        }
-        return j;
-    }
-
     // Modifier les informations d'un joueur
     public void modifierJoueur() throws SQLException {
         Scanner scanner = new Scanner(System.in);
