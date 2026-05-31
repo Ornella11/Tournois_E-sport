@@ -7,7 +7,7 @@ Pour lancer l'application principale (interface console) :
 
 1. Assurez-vous d'avoir Java 17 ou supérieur installé.
 2. Compilez le projet avec votre IDE (IntelliJ, Eclipse, etc.) ou en ligne de commande.
-3. Exécutez la classe `Start`.
+3. Exécutez la classe `MenuPrincipal`.
    L'application ouvrira directement le menu principal et vous n'aurez pas à répondre à d'autres questions pour lancer le projet.
 
 Pour lancer l'interface graphique avec JavaFX :
@@ -21,32 +21,13 @@ Pour lancer l'interface graphique avec JavaFX :
 6. Cliquez sur `Apply` puis `Ok`.
 7. Allez dans `Run > Edit Configurations`.
 8. Cliquez sur `+` puis `Application`.
-9. Cliquez sur `Modify options` et sélectionnez `Add VM options`.
-10. Dans `VM options`, ajoutez la ligne suivante (adaptez le chemin à votre installation) :
+9. Sélectionner "Menu"
+10. Cliquez sur `Modify options` et sélectionnez `Add VM options`.
+11. Dans `VM options`, ajoutez la ligne suivante (adaptez le chemin à votre installation) :
 
    --module-path "C:\chemin-vers\javafx-sdk-25.0.2\lib" --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.web --enable-native-access=javafx.graphics -Dfile.encoding=UTF-8
 
-11. Cliquez sur `Apply` puis `Run`.
+12. Cliquez sur `Apply` puis `Run`.
     L'interface graphique devrait alors se lancer.
 
----
 
-2. Choix de SGBD et informations de connexion
----------------------------------------------
-Le projet utilise **MySQL** comme système de gestion de base de données.
-La base de données s'appelle `Prog_BD` et contient les tables `programmeur`, `projet` et `programmeur_projet`.
-
-Pour se connecter à la base de données :
-- Utilisateur : `groupe10`
-- Mot de passe : `password*`
-
----
-
-3. Fonctionnalités supplémentaires ajoutées
---------------------------------------------
-- Menu de statistiques complet avec :
-  * Salaire moyen des programmeurs
-  * Prime maximale
-  * Durée moyenne des projets
-  * Programmeur le plus jeune
-- Gestion du nombre maximal de tentatives pour la saisie des données dans la console.
