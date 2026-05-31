@@ -1,5 +1,7 @@
 # Tournois_E-sport
 
+L’objectif de ce projet est de concevoir et de développer une plateforme complète dédiée à la gestion de tournois e-sport. Ce système doit être capable d'administrer efficacement les caractéristiques des jeux, les profils des joueurs et de leurs équipes respectives (rosters), le déroulement des tournois par phases, ainsi que l'historique des matchs et les statistiques de performance individuelles.
+
 1. Lancement de l'application
 -----------------------------
 Pour lancer l'application principale (interface console) :
